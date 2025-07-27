@@ -1,6 +1,6 @@
 import mongoose from "../db.js";
 
-
+//  User schema for authentication
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -37,4 +37,5 @@ const userSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 });
 
-export default mongoose.Model("user", userSchema)
+const Users = mongoose.Model("user", userSchema)
+export default Users;
