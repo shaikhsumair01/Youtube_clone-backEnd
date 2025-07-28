@@ -1,6 +1,6 @@
 // Channel model for storing the channel details
-import mongoose from "../db.js";
-
+import mongoose from "mongoose";
+import Video from "./video.model.js";
 const channelSchema = new mongoose.Schema({
   channelName: {
     type: String,
@@ -30,12 +30,8 @@ const channelSchema = new mongoose.Schema({
     default: 0,
   },
 
-  videos: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Video",
-    },
-  ],
+  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
+
 
   createdAt: {
     type: Date,
@@ -43,5 +39,5 @@ const channelSchema = new mongoose.Schema({
   },
 });
 
-const channelModel = mongoose.model("Channel", channelSchema);
-export default channelModel
+const Channel = mongoose.model("Channel", channelSchema);
+export default Channel

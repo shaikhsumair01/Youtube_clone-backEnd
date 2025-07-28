@@ -1,23 +1,19 @@
 import express from "express";
-import mongoose from "mongoose";
+import connectDB from "./db.js";
 import dotenv from "dotenv";
-import userRoute from "./userRoute.routes.js";
+import userRoute from "./user.routes.js";
 import channelRoute from "./channel.routes.js";
+import videoRoute from "./video.routes.js";
 
 dotenv.config(); // loads your .env variables
 
 const port = 3300;
 const app = express();
 
-const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority`;
-
-userRoute(app)
-channelRoute(app)
-
-mongoose.connect(uri)
-.then(() => console.log(' Connected to MongoDB Atlas'))
-.catch(err => console.error('Connection error:', err));
-
 app.use(express.json());
-
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+connectDB().then(() => {
+  userRoute(app);
+  channelRoute(app);
+  videoRoute(app);
+  app.listen(port, () => console.log(`Server is running on port ${port}`));
+});

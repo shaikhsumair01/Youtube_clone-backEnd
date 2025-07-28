@@ -1,4 +1,4 @@
-import mongoose from "../db.js";
+import mongoose from "mongoose";
 
 //  User schema for authentication
 const userSchema = new mongoose.Schema({
@@ -37,5 +37,5 @@ const userSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 });
 
-const Users = mongoose.Model("user", userSchema)
+const Users = mongoose.model("User", userSchema)
 export default Users;

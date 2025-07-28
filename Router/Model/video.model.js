@@ -1,4 +1,5 @@
-import mongoose from "../db.js";
+import mongoose from "mongoose";
+import Channels from "./channel.model.js";
 // Creating video Schema:
 const videoSchema = new mongoose.Schema({
    videoId: { type: String, required: true, unique: true },
@@ -9,7 +10,9 @@ const videoSchema = new mongoose.Schema({
   publishedAt: Date,
   views: Number,
   likes: Number,
-  fetchedAt: { type: Date, default: Date.now }
+  fetchedAt: { type: Date, default: Date.now },
+  channel: { type: mongoose.Schema.Types.ObjectId, ref: "Channel" }
 
 })
-export default mongoose.Model("video", videoSchema)
+const Video =  mongoose.model("Video", videoSchema)
+export default Video;

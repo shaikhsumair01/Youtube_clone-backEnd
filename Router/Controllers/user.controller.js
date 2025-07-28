@@ -1,4 +1,4 @@
-import Users from "../Model/user.model"
+import Users from "../Model/user.model.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv";
@@ -7,12 +7,26 @@ dotenv.config();
 export const registerUser = async(req, res) =>{
     try{
          // taking the name, email and password input from the user
-        let { name, email, password } = req.body;
+        let { username, email, password } = req.body;
 
-        if (!name || !email || !password) {
+        if (!username || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
     }
+    // validating email
     email = email.toLowerCase();
+    // emailRegex checks if the email address contains symbols such as @ or other symbols
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+  return res.status(400).json({ message: "Invalid email format, Email should contain @ and . symbols" });
+    }
+// Domain whitelisting for the emails. This will check whether the email address has gmail.com extension or not
+const allowedDomains = ["gmail.com", "yahoo.com", "outlook.com"];
+const domain = email.split("@")[1];
+
+if (!allowedDomains.includes(domain)) {
+  return res.status(400).json({ message: "Email domain not allowed, only gmail.com, yahoo.com and outlook.com domains accepted" });
+}
 
         // looking for existing users from the existing email
         
@@ -23,9 +37,9 @@ export const registerUser = async(req, res) =>{
         } else {
             // creating a hash password for the user and storing them with user details
             const hashedPassword = await bcrypt.hash(password, 10);
-            const user = new Users({ name, email, password:hashedPassword });
+            const user = new Users({ username, email, password:hashedPassword });
             await user.save();
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user._id }, process.env.Secret_Key, { expiresIn: '1h' });
             return res.status(201).json({ message: "User added successfully", token });
         }
     } catch (err) {
@@ -51,7 +65,7 @@ export const loginUser = async (req, res) =>{
 
         //  if the password is valid then give the token
         if (isPasswordValid){
-            const token = jwt.sign({userId: user._id, userName: user.name, userEmail : user.email}, process.env.SECRET_KEY, {expiresIn:"1h"})
+            const token = jwt.sign({userId: user._id, userName: user.username, userEmail : user.email}, process.env.Secret_Key, {expiresIn:"1h"})
              res.status(200).json({ message: "Login Successful", token: token });
         }
         // else return error message
@@ -77,7 +91,7 @@ export const verifyToken = (req, res, next) =>{
     } else {
         try {
             const token = authHeader.split(" ")[1];
-            const user = jwt.verify(token, process.env.SECRET_KEY)
+            const user = jwt.verify(token, process.env.Secret_Key)
             req.user = user; // attaching user info to req obj
             next() // processed to next route or middleware
         } catch (err) {
