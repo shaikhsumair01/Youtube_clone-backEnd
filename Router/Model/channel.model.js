@@ -1,6 +1,5 @@
 // Channel model for storing the channel details
 import mongoose from "mongoose";
-import Video from "./video.model.js";
 const channelSchema = new mongoose.Schema({
   channelName: {
     type: String,

@@ -93,6 +93,8 @@ export const verifyToken = (req, res, next) =>{
             const token = authHeader.split(" ")[1];
             const user = jwt.verify(token, process.env.Secret_Key)
             req.user = user; // attaching user info to req obj
+            console.log("Decoded user:", req.user);
+
             next() // processed to next route or middleware
         } catch (err) {
             return res.status(403).json({ message: "Invalid JWT Token!" })

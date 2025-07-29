@@ -5,6 +5,11 @@ import Channel from "../Model/channel.model.js";
 export const uploadVideo = async (req, res) => {
   try {
     const { title, url, channelId } = req.body;
+    const userId = req.user.userId; // pulled from verifyToken middleware
+    if(!userId){
+      return res.status(400).json({message:"The user doesn't exist"});
+    }
+    else{
     /* We will get the url from the body and then split the result giving us ["https", "youtube", "url"]
     Then after getting the array, we will pop the url and if the url has a special charater "?" then we will remove it from split*/
    const videoId = url.split("/").pop().split("?")[0];
@@ -32,6 +37,7 @@ if (existing) {
     });
 
     res.status(201).json({ message: "Video uploaded", video });
+  }
   } catch (err) {
     console.error("Video upload error:", err);
     res.status(500).json({ message: "Error uploading video" });
@@ -55,12 +61,19 @@ export const updateVideo = async (req, res) => {
   try {
     // getting the id from the url
     const { id } = req.params;
-    // finding the videos from id and then updating it
+    const userId = req.user.userId;
+     if(!userId){
+      return res.status(400).json({message:"The user doesn't exist"});
+    }
+    else{
+ // finding the videos from id and then updating it
     const updated = await Video.findByIdAndUpdate(id, req.body, { new: true });
     // if the video is not existing then we send video not found
     if (!updated) return res.status(404).json({ message: "Video not found" });
     // else update it
     res.status(200).json({ message: "Video updated", video: updated });
+    }
+   
   } catch (err) {
     res.status(500).json({ message: "Error updating video" });
   }
@@ -70,7 +83,12 @@ export const deleteVideo = async (req, res) => {
   try {
     // getting id from the url
     const { id } = req.params;
-    // searching for the id and deleting it
+     const userId = req.user.userId;
+     if(!userId){
+      return res.status(400).json({message:"The user doesn't exist"});
+    }
+    else{
+       // searching for the id and deleting it
     const deleted = await Video.findByIdAndDelete(id);
     console.log(deleted)
     // if the video doesn't exist then we return video not found
@@ -80,11 +98,12 @@ export const deleteVideo = async (req, res) => {
    if (deleted.channel) {
   await Channel.findByIdAndUpdate(deleted.channel, {
     $pull: { videos: deleted._id },
-  });
+    });
+  } 
+  // Showing the success message
+    res.status(200).json({ message: "Video deleted" });
 }
 
-    // Showing the success message
-    res.status(200).json({ message: "Video deleted" });
     // handling the error
   } catch (err) {
     res.status(500).json({ message: "Error deleting video" });

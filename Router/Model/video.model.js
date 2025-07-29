@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Channels from "./channel.model.js";
 // Creating video Schema:
 const videoSchema = new mongoose.Schema({
    videoId: { type: String, required: true, unique: true },

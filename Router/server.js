@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import userRoute from "./user.routes.js";
 import channelRoute from "./channel.routes.js";
 import videoRoute from "./video.routes.js";
+import CommentRoute from "./comment.routes.js";
 
 dotenv.config(); // loads your .env variables
 
@@ -15,5 +16,6 @@ connectDB().then(() => {
   userRoute(app);
   channelRoute(app);
   videoRoute(app);
+  CommentRoute(app);
   app.listen(port, () => console.log(`Server is running on port ${port}`));
 });
