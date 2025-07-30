@@ -7,7 +7,10 @@ dotenv.config();
 export const registerUser = async(req, res) =>{
     try{
          // taking the name, email and password input from the user
+
         let { username, email, password } = req.body;
+        console.log("Incoming data:", req.body);
+
 
         if (!username || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
@@ -33,7 +36,7 @@ if (!allowedDomains.includes(domain)) {
         const exisiting_user = await Users.findOne({ email: email });
         // if the user exists then return the message user already exists else create new user  
         if (exisiting_user) {
-            return res.status(400).json({ message: "User already exist!" })
+            return res.status(409).json({ message: "User already exist!" })
         } else {
             // creating a hash password for the user and storing them with user details
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -43,6 +46,8 @@ if (!allowedDomains.includes(domain)) {
             return res.status(201).json({ message: "User added successfully", token });
         }
     } catch (err) {
+        
+
        console.error("Registration error:", err); 
         return res.status(500).json({ message: `Cannot add the user details due to server error.` });
     }
@@ -66,7 +71,8 @@ export const loginUser = async (req, res) =>{
         //  if the password is valid then give the token
         if (isPasswordValid){
             const token = jwt.sign({userId: user._id, userName: user.username, userEmail : user.email}, process.env.Secret_Key, {expiresIn:"1h"})
-             res.status(200).json({ message: "Login Successful", token: token });
+             res.status(200).json({ message: "Login Successful", token: token,  user: { id: user._id, username: user.username, email: user.email }
+ });
         }
         // else return error message
         else {
