@@ -43,7 +43,13 @@ if (!allowedDomains.includes(domain)) {
             const user = new Users({ username, email, password:hashedPassword });
             await user.save();
             const token = jwt.sign({ userId: user._id }, process.env.Secret_Key, { expiresIn: '1h' });
-            return res.status(201).json({ message: "User added successfully", token });
+            return res.status(201).json({ message: "User added successfully", token,  
+    user: {
+    id: user._id,
+    username: user.username,
+    email: user.email
+  }
+ });
         }
     } catch (err) {
         
