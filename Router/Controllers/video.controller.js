@@ -4,7 +4,7 @@ import Channel from "../Model/channel.model.js";
 // Post method for creating videos:
 export const uploadVideo = async (req, res) => {
   try {
-    const { title, url, channelId } = req.body;
+    const { title, url, channelId ,description, thumbnail} = req.body;
     const userId = req.user.userId; // pulled from verifyToken middleware
     if(!userId){
       return res.status(400).json({message:"The user doesn't exist"});
@@ -28,7 +28,9 @@ if (existing) {
       title,
       url,
       channel: channelId,
-      videoId
+      videoId,
+      description,
+      thumbnail
     });
 
     // Push video into the channel’s video array
