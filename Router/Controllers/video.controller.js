@@ -4,7 +4,7 @@ import Channel from "../Model/channel.model.js";
 // Post method for creating videos:
 export const uploadVideo = async (req, res) => {
   try {
-    const { title, url, channelId ,description, thumbnail} = req.body;
+    const { title, url, channelId ,description} = req.body;
     const userId = req.user.userId; // pulled from verifyToken middleware
     if(!userId){
       return res.status(400).json({message:"The user doesn't exist"});
@@ -19,6 +19,8 @@ export const uploadVideo = async (req, res) => {
 }
 //    if the videoId is existing return status 400
 const existing = await Video.findOne({ videoId });
+const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
 if (existing) {
   return res.status(409).json({ message: "Video already exists." });
 }
@@ -30,7 +32,7 @@ if (existing) {
       channel: channelId,
       videoId,
       description,
-      thumbnail
+      thumbnail:thumbnail
     });
 
     // Push video into the channel’s video array
@@ -64,12 +66,28 @@ export const updateVideo = async (req, res) => {
     // getting the id from the url
     const { id } = req.params;
     const userId = req.user.userId;
+  
      if(!userId){
       return res.status(400).json({message:"The user doesn't exist"});
     }
     else{
+      // Prepare update fields
+    let updatedFields = { ...req.body };
+
+    // If URL is being updated, re-extract videoId and regenerate thumbnail
+    if (req.body.url) {
+      const videoId = req.body.url.split("/").pop().split("?")[0];
+
+      if (!videoId) {
+        return res.status(400).json({ message: "Invalid URL. Could not extract videoId." });
+      }
+
+      updatedFields.videoId = videoId;
+      updatedFields.thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    }
+
  // finding the videos from id and then updating it
-    const updated = await Video.findByIdAndUpdate(id, req.body, { new: true });
+    const updated = await Video.findByIdAndUpdate(id, updatedFields,{ new: true });
     // if the video is not existing then we send video not found
     if (!updated) return res.status(404).json({ message: "Video not found" });
     // else update it

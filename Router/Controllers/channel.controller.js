@@ -50,7 +50,7 @@ export const getChannelById = async (req, res) => {
 export const getMyChannel = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const channel = await Channel.findOne({ owner: userId });
+    const channel = await Channel.findOne({ owner: userId }).populate("videos");
 
     if (!channel) {
       return res.status(404).json({ message: "No channel found." });
