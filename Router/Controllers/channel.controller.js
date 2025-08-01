@@ -46,3 +46,19 @@ export const getChannelById = async (req, res) => {
     res.status(500).json({ message: "Error retrieving channel information." });
   }
 };
+// getting my channel when I am logged in (owner's channel)
+export const getMyChannel = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const channel = await Channel.findOne({ owner: userId });
+
+    if (!channel) {
+      return res.status(404).json({ message: "No channel found." });
+    }
+
+    res.status(200).json({ channel });
+  } catch (err) {
+    console.error("Channel lookup error:", err);
+    res.status(500).json({ message: "Server error." });
+  }
+};

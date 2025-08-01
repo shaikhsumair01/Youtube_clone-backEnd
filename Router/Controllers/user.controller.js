@@ -38,11 +38,11 @@ if (!allowedDomains.includes(domain)) {
         if (exisiting_user) {
             return res.status(409).json({ message: "User already exist!" })
         } else {
-            // creating a hash password for the user and storing them with user details
+            // creating a hash password for the user and storing them with user details and giving the token for 1 day
             const hashedPassword = await bcrypt.hash(password, 10);
             const user = new Users({ username, email, password:hashedPassword });
             await user.save();
-            const token = jwt.sign({ userId: user._id }, process.env.Secret_Key, { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user._id }, process.env.Secret_Key, { expiresIn: '1d' });
             return res.status(201).json({ message: "User added successfully", token,  
     user: {
     id: user._id,
@@ -76,7 +76,7 @@ export const loginUser = async (req, res) =>{
 
         //  if the password is valid then give the token
         if (isPasswordValid){
-            const token = jwt.sign({userId: user._id, userName: user.username, userEmail : user.email}, process.env.Secret_Key, {expiresIn:"1h"})
+            const token = jwt.sign({userId: user._id, userName: user.username, userEmail : user.email}, process.env.Secret_Key, {expiresIn:"1d"})
              res.status(200).json({ message: "Login Successful", token: token,  user: { id: user._id, username: user.username, email: user.email }
  });
         }
