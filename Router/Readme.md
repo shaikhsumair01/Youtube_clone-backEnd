@@ -80,6 +80,9 @@ This is the backend API for a YouTube Clone application, built with **Express.js
 4. **Run the server**
     npm start
 
+5. **Start the server at frontEnd (Refer to Youtube_Clone-Frontend) which runs at port 5173**
+
+
 ## 📡API Endpoints:
 **User Routes**
 - Post: /register : to regsiter new user
