@@ -42,7 +42,7 @@ if (!allowedDomains.includes(domain)) {
             const hashedPassword = await bcrypt.hash(password, 10);
             const user = new Users({ username, email, password:hashedPassword });
             await user.save();
-            const token = jwt.sign({ userId: user._id }, process.env.Secret_Key, { expiresIn: '1d' });
+            const token = jwt.sign({ userId: user._id, userName: user.username, userEmail: user.email }, process.env.Secret_Key, { expiresIn: '1d' });
             return res.status(201).json({ message: "User added successfully", token,  
     user: {
     id: user._id,
