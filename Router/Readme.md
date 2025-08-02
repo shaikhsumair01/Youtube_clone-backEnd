@@ -54,11 +54,16 @@ This is the backend API for a YouTube Clone application, built with **Express.js
 
 1. **Clone the repository**
    ```bash
--   git clone https://github.com/your-username/youtube-clone-backend.git
-   cd youtube-clone-backend
+-   git clone https://github.com/your-username/Youtube-clone-backend.git
+   cd Youtube-clone-backend
    
 2. **Install Dependencies**
+    npm init
     npm install
+    <!-- Install these dependencies -->
+    npm install express nodemon jsonwebtoken mongoose cors dotenv bcrypt
+    npm install --save-dev nodemon
+
 
 
 3. **Configure your .env file:**    
