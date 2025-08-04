@@ -54,7 +54,7 @@ This is the backend API for a YouTube Clone application, built with **Express.js
 
 1. **Clone the repository**
    ```bash
--   git clone https://github.com/your-username/Youtube-clone-backend.git
+-   git clone https://github.com/shaikhsumair01/Youtube_clone-backEnd.git
    cd Youtube-clone-backend
    
 2. **Install Dependencies**
