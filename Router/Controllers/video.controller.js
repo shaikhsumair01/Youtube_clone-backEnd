@@ -10,9 +10,9 @@ export const uploadVideo = async (req, res) => {
       return res.status(400).json({message:"The user doesn't exist"});
     }
     const channel = await Channel.findById(channelId);
-    if (!channel) {
+if (!channel) {
   return res.status(404).json({ message: "Channel not found" });
-  }
+}
 
     else{
     /* We will get the url from the body and then split the result giving us ["https", "youtube", "url"]
@@ -23,9 +23,9 @@ export const uploadVideo = async (req, res) => {
   return res.status(400).json({ message: "Invalid URL. Could not extract videoId." });
 }
 //    if the videoId is existing return status 400
-const existing = await Video.findOne({ videoId, channel: channelId });
+const existing = await Video.findOne({ videoId });
 if (existing) {
-  return res.status(409).json({ message: "This video already exists in your channel." });
+  return res.status(409).json({ message: "This video already exists in database. Please try adding another video." });
 }
 
 const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
@@ -115,7 +115,7 @@ export const deleteVideo = async (req, res) => {
     else{
        // searching for the id and deleting it
     const deleted = await Video.findByIdAndDelete(id);
-
+    console.log(deleted)
     // if the video doesn't exist then we return video not found
     if (!deleted) return res.status(404).json({ message: "Video not found" });
 
