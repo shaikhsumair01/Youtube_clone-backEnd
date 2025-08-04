@@ -13,7 +13,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://youtube-clone-front-end-pi.vercel.app"
+  "https://streamly-vgcb.vercel.app"
 ];
 app.use(express.json());
 
