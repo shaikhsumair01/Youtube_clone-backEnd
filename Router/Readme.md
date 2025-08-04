@@ -22,7 +22,7 @@ This is the backend API for a YouTube Clone application, built with **Express.js
 
 ✅ **Live Backend:** [https://youtube-clone-backend-6b23.onrender.com]
 📦 **Frontend Repo:** [https://github.com/shaikhsumair01/Youtube_clone-frontEnd.git]
-🚀 **Frontend Deployment:** [https://your-frontend.vercel.app](https://your-frontend.vercel.app)
+🚀 **Frontend Deployment:** [https://streamly-vgcb.vercel.app/]
 
 
 ## 🛠️ Tech Stack
