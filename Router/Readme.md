@@ -14,8 +14,16 @@ This is the backend API for a YouTube Clone application, built with **Express.js
 - 📁 **MongoDB Integration with Mongoose**
 - 📊 **Structured Error Handling**
 - 📦 **RESTful API Design**
-
+- 🌐 **Render** (For deployment)
+- 🌐 **Vercel** (For deployment)
+ 
 ---
+## 🌐 Deployment Status
+
+✅ **Live Backend:** [https://youtube-clone-backend-6b23.onrender.com]
+📦 **Frontend Repo:** [https://github.com/shaikhsumair01/Youtube_clone-frontEnd.git]
+🚀 **Frontend Deployment:** [https://your-frontend.vercel.app](https://your-frontend.vercel.app)
+
 
 ## 🛠️ Tech Stack
 
@@ -55,7 +63,7 @@ This is the backend API for a YouTube Clone application, built with **Express.js
 1. **Clone the repository**
    ```bash
 -   git clone https://github.com/shaikhsumair01/Youtube_clone-backEnd.git
-   cd Youtube-clone-backend
+   cd Backend
    
 2. **Install Dependencies**
     npm init
